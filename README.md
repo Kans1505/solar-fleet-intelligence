@@ -8,11 +8,15 @@ ML system for solar inverter efficiency prediction, fleet health monitoring, and
 
 \## 🎯 Problem
 
+
+
 Solar inverters lose efficiency due to temperature, load, soiling, and aging. Identifying \*\*why\*\* and \*\*how much it costs\*\* enables proactive maintenance and ROI decisions.
 
 
 
 \## 📊 Results
+
+
 
 | Metric | Value |
 
@@ -30,7 +34,9 @@ Solar inverters lose efficiency due to temperature, load, soiling, and aging. Id
 
 \## 🛠️ Tech Stack
 
-\- \*\*Model:\*\* XGBoost (LightGBM equivalent)
+
+
+\- \*\*Model:\*\* XGBoost
 
 \- \*\*Explainability:\*\* SHAP
 
@@ -46,7 +52,9 @@ Solar inverters lose efficiency due to temperature, load, soiling, and aging. Id
 
 \## 🚀 Features
 
-\- \*\*Efficiency Prediction\*\* — from temp, load, irradiance, weather, aging
+
+
+\- \*\*Efficiency Prediction\*\* — from temperature, load, irradiance, weather, aging
 
 \- \*\*Fleet Health Monitoring\*\* — Isolation Forest flags anomalous inverters
 
@@ -61,4 +69,8 @@ Solar inverters lose efficiency due to temperature, load, soiling, and aging. Id
 
 
 \## 📁 Project Structure
+
+
+
+
 
