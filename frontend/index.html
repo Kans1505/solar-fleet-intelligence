@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Solar Fleet Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">SF</div>
+      <div class="brand-text">
+        <span class="brand-name">Solar Fleet</span>
+        <span class="brand-sub">Intelligence</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">Navigation</div>
+      <a class="nav-item active" data-section="overview">Overview</a>
+      <a class="nav-item" data-section="predict">Predict</a>
+      <a class="nav-item" data-section="fleet">Fleet Health</a>
+      <a class="nav-item" data-section="cost">Cost Impact</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="status-row">
+        <span class="dot"></span>
+        <span id="api-status-text">API Online</span>
+      </div>
+      <div class="version">v2.0 · XGBoost</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <h1 id="page-title">Fleet Overview</h1>
+        <p class="page-sub">Real-time inverter performance intelligence</p>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" id="refresh-btn" title="Refresh">↻</button>
+        <div class="avatar">KN</div>
+      </div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="section active">
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Model R²</div>
+          <div class="kpi-value" data-target="0.90" data-decimals="2">0.00</div>
+          <div class="kpi-foot">5-fold CV 0.9058</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Fleet Annual Loss</div>
+          <div class="kpi-value">₹<span data-target="5.55" data-decimals="2">0.00</span>L</div>
+          <div class="kpi-foot">Recoverable ₹3.13L</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Anomalies Flagged</div>
+          <div class="kpi-value"><span data-target="3" data-decimals="0">0</span><span class="kpi-muted">/10</span></div>
+          <div class="kpi-foot warn">Needs attention</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Test MAE</div>
+          <div class="kpi-value" data-target="0.0083" data-decimals="4">0.0000</div>
+          <div class="kpi-foot">0.8% avg error</div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Fleet Health Distribution</h2>
+            <span class="tag">Live</span>
+          </div>
+          <div class="panel-body">
+            <canvas id="healthChart"></canvas>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Cost Impact by Inverter</h2>
+            <span class="tag">₹ Annual</span>
+          </div>
+          <div class="panel-body">
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PREDICT -->
+    <section id="predict" class="section">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Predict Inverter Efficiency</h2>
+          <span class="tag">XGBoost</span>
+        </div>
+
+        <div class="predict-grid">
+          <div class="field">
+            <label>Hour of Day</label>
+            <input type="range" id="hour" min="6" max="18" value="12" />
+            <span class="field-val" id="hour-val">12:00</span>
+          </div>
+          <div class="field">
+            <label>Temperature (°C)</label>
+            <input type="range" id="temperature" min="10" max="55" value="30" step="0.5" />
+            <span class="field-val" id="temperature-val">30.0</span>
+          </div>
+          <div class="field">
+            <label>Irradiance (W/m²)</label>
+            <input type="range" id="irradiance" min="0" max="1100" value="700" step="10" />
+            <span class="field-val" id="irradiance-val">700</span>
+          </div>
+          <div class="field">
+            <label>DC Power (kW)</label>
+            <input type="range" id="dc_power" min="0" max="120" value="70" step="1" />
+            <span class="field-val" id="dc_power-val">70</span>
+          </div>
+          <div class="field">
+            <label>Load Ratio</label>
+            <input type="range" id="load_ratio" min="0" max="1.2" value="0.7" step="0.05" />
+            <span class="field-val" id="load_ratio-val">0.70</span>
+          </div>
+          <div class="field">
+            <label>Previous Hour Efficiency</label>
+            <input type="range" id="eff_lag1" min="0.5" max="1.0" value="0.93" step="0.01" />
+            <span class="field-val" id="eff_lag1-val">0.93</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="predict-btn">Run Prediction</button>
+
+        <div class="result" id="result-box" style="display:none;">
+          <div class="result-label">Predicted Efficiency</div>
+          <div class="result-value" id="result-value">—</div>
+          <div class="result-status" id="result-status">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLEET -->
+    <section id="fleet" class="section">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Fleet Health Monitor</h2>
+          <span class="tag" id="fleet-count">10 inverters</span>
+        </div>
+        <div id="fleet-table" class="table-wrap">
+          <div class="empty">Loading fleet data…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COST -->
+    <section id="cost" class="section">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Cost Impact Analysis</h2>
+          <span class="tag">₹ Annual</span>
+        </div>
+        <div id="cost-table" class="table-wrap">
+          <div class="empty">Loading cost data…</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

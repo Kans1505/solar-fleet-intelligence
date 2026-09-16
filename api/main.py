@@ -1,8 +1,9 @@
 """
 FastAPI backend for Solar Fleet Intelligence.
-Now with API key authentication + request logging.
+Now with API key authentication + request logging + CORS.
 """
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
@@ -11,6 +12,15 @@ import joblib
 from api.auth import verify_api_key, log_request
 
 app = FastAPI(title="Solar Fleet Intelligence API", version="2.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.middleware("http")(log_request)
 
 model = joblib.load('models/best_model.pkl')
