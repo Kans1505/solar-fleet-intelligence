@@ -1,14 +1,17 @@
 """
 FastAPI backend for Solar Fleet Intelligence.
-Exposes /predict and /fleet-health endpoints.
+Now with API key authentication + request logging.
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 import joblib
 
-app = FastAPI(title="Solar Fleet Intelligence API", version="1.0")
+from api.auth import verify_api_key, log_request
+
+app = FastAPI(title="Solar Fleet Intelligence API", version="2.0")
+app.middleware("http")(log_request)
 
 model = joblib.load('models/best_model.pkl')
 FEATURES = joblib.load('models/feature_names.pkl')
@@ -31,17 +34,19 @@ class PredictRequest(BaseModel):
 
 @app.get("/")
 def root():
+    """Public endpoint — no auth required."""
     return {
         "name": "Solar Fleet Intelligence API",
-        "version": "1.0",
+        "version": "2.0",
         "model": metrics['model_name'],
         "test_r2": round(metrics['r2'], 4),
         "test_mae": round(metrics['mae'], 4),
+        "auth": "X-API-Key header required for /predict, /fleet-health, /cost-impact"
     }
 
 
 @app.post("/predict")
-def predict(req: PredictRequest):
+def predict(req: PredictRequest, user: str = Depends(verify_api_key)):
     d = req.dict()
     d['temp_deviation'] = d['temperature'] - 25.0
     d['irr_per_temp'] = d['irradiance'] / (d['temperature'] + 1)
@@ -63,16 +68,17 @@ def predict(req: PredictRequest):
         "predicted_efficiency": round(pred, 4),
         "predicted_efficiency_pct": round(pred * 100, 2),
         "status": status,
+        "requested_by": user
     }
 
 
 @app.get("/fleet-health")
-def fleet_health():
+def fleet_health(user: str = Depends(verify_api_key)):
     df = pd.read_csv('data/fleet_health.csv')
-    return df.to_dict(orient='records')
+    return {"requested_by": user, "data": df.to_dict(orient='records')}
 
 
 @app.get("/cost-impact")
-def cost_impact():
+def cost_impact(user: str = Depends(verify_api_key)):
     df = pd.read_csv('data/cost_impact.csv')
-    return df.to_dict(orient='records')
+    return {"requested_by": user, "data": df.to_dict(orient='records')}
