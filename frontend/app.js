@@ -1,5 +1,5 @@
 /* ============ CONFIG ============ */
-const API_BASE = 'http://127.0.0.1:8000';
+const API_BASE = 'https://solar-fleet-intelligence-1.onrender.com';
 const API_KEY  = 'demo-key-tata-2026';
 
 /* ============ NAVIGATION ============ */
