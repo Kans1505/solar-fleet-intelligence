@@ -1,5 +1,5 @@
 /* ============ CONFIG ============ */
-const API_BASE = 'https://solar-fleet-intelligence-1.onrender.com';
+const API_BASE = 'https://solar-fleet-intelligence.pages.dev/';
 const API_KEY  = 'demo-key-tata-2026';
 
 /* ============ NAVIGATION ============ */
