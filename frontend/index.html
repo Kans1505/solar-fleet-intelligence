@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Solar Fleet Intelligence</title>
+<title>Solar Fleet Intelligence — Kanishka Nandini</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,7 +14,6 @@
 
 <div class="app">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-mark">SF</div>
@@ -37,11 +36,14 @@
         <span class="dot"></span>
         <span id="api-status-text">API Online</span>
       </div>
+      <div class="built-by">
+        <span class="built-label">Built by</span>
+        <span class="built-name">Kanishka Nandini</span>
+      </div>
       <div class="version">v2.0 · XGBoost</div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
 
     <header class="topbar">
@@ -50,14 +52,15 @@
         <p class="page-sub">Real-time inverter performance intelligence</p>
       </div>
       <div class="topbar-right">
+        <div class="credit-badge">
+          <span>Built by</span>
+          <strong>Kanishka Nandini</strong>
+        </div>
         <button class="icon-btn" id="refresh-btn" title="Refresh">↻</button>
-        <div class="avatar">KN</div>
       </div>
     </header>
 
-    <!-- OVERVIEW -->
     <section id="overview" class="section active">
-
       <div class="kpi-grid">
         <div class="kpi">
           <div class="kpi-label">Model R²</div>
@@ -101,52 +104,23 @@
           </div>
         </div>
       </div>
-
     </section>
 
-    <!-- PREDICT -->
     <section id="predict" class="section">
       <div class="panel">
         <div class="panel-head">
           <h2>Predict Inverter Efficiency</h2>
           <span class="tag">XGBoost</span>
         </div>
-
         <div class="predict-grid">
-          <div class="field">
-            <label>Hour of Day</label>
-            <input type="range" id="hour" min="6" max="18" value="12" />
-            <span class="field-val" id="hour-val">12:00</span>
-          </div>
-          <div class="field">
-            <label>Temperature (°C)</label>
-            <input type="range" id="temperature" min="10" max="55" value="30" step="0.5" />
-            <span class="field-val" id="temperature-val">30.0</span>
-          </div>
-          <div class="field">
-            <label>Irradiance (W/m²)</label>
-            <input type="range" id="irradiance" min="0" max="1100" value="700" step="10" />
-            <span class="field-val" id="irradiance-val">700</span>
-          </div>
-          <div class="field">
-            <label>DC Power (kW)</label>
-            <input type="range" id="dc_power" min="0" max="120" value="70" step="1" />
-            <span class="field-val" id="dc_power-val">70</span>
-          </div>
-          <div class="field">
-            <label>Load Ratio</label>
-            <input type="range" id="load_ratio" min="0" max="1.2" value="0.7" step="0.05" />
-            <span class="field-val" id="load_ratio-val">0.70</span>
-          </div>
-          <div class="field">
-            <label>Previous Hour Efficiency</label>
-            <input type="range" id="eff_lag1" min="0.5" max="1.0" value="0.93" step="0.01" />
-            <span class="field-val" id="eff_lag1-val">0.93</span>
-          </div>
+          <div class="field"><label>Hour of Day</label><input type="range" id="hour" min="6" max="18" value="12" /><span class="field-val" id="hour-val">12:00</span></div>
+          <div class="field"><label>Temperature (°C)</label><input type="range" id="temperature" min="10" max="55" value="30" step="0.5" /><span class="field-val" id="temperature-val">30.0</span></div>
+          <div class="field"><label>Irradiance (W/m²)</label><input type="range" id="irradiance" min="0" max="1100" value="700" step="10" /><span class="field-val" id="irradiance-val">700</span></div>
+          <div class="field"><label>DC Power (kW)</label><input type="range" id="dc_power" min="0" max="120" value="70" step="1" /><span class="field-val" id="dc_power-val">70</span></div>
+          <div class="field"><label>Load Ratio</label><input type="range" id="load_ratio" min="0" max="1.2" value="0.7" step="0.05" /><span class="field-val" id="load_ratio-val">0.70</span></div>
+          <div class="field"><label>Previous Hour Efficiency</label><input type="range" id="eff_lag1" min="0.5" max="1.0" value="0.93" step="0.01" /><span class="field-val" id="eff_lag1-val">0.93</span></div>
         </div>
-
         <button class="btn-primary" id="predict-btn">Run Prediction</button>
-
         <div class="result" id="result-box" style="display:none;">
           <div class="result-label">Predicted Efficiency</div>
           <div class="result-value" id="result-value">—</div>
@@ -155,7 +129,6 @@
       </div>
     </section>
 
-    <!-- FLEET -->
     <section id="fleet" class="section">
       <div class="panel">
         <div class="panel-head">
@@ -168,7 +141,6 @@
       </div>
     </section>
 
-    <!-- COST -->
     <section id="cost" class="section">
       <div class="panel">
         <div class="panel-head">

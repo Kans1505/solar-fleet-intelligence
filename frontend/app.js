@@ -1,5 +1,5 @@
 /* ============ CONFIG ============ */
-const API_BASE = 'http://127.0.0.1:8000';
+const API_BASE = 'https://solar-fleet-intelligence-1.onrender.com';
 const API_KEY  = 'demo-key-tata-2026';
 
 /* ============ NAVIGATION ============ */
@@ -173,7 +173,7 @@ async function loadCost() {
       </tr>`;
     });
 
-    html += `<tr style="background:var(--bg-2);">
+    html += `<tr style="background:#f1f5f9;">
       <td><strong>TOTAL</strong></td><td>—</td><td>—</td>
       <td><strong>₹${Math.round(total).toLocaleString('en-IN')}</strong></td>
     </tr></tbody></table>`;
@@ -201,11 +201,11 @@ async function initCharts() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#121826',
-          borderColor: '#29334d',
+          backgroundColor: '#ffffff',
+          borderColor: '#e2e8f0',
           borderWidth: 1,
-          titleColor: '#e6ecf5',
-          bodyColor: '#8a95ad',
+          titleColor: '#0f172a',
+          bodyColor: '#475569',
           padding: 10,
           titleFont: { family: 'Inter', size: 12, weight: '600' },
           bodyFont:  { family: 'IBM Plex Mono', size: 11 }
@@ -213,12 +213,12 @@ async function initCharts() {
       },
       scales: {
         x: {
-          grid: { color: '#1e2740', drawBorder: false },
-          ticks: { color: '#5a657d', font: { family: 'IBM Plex Mono', size: 10 } }
+          grid: { color: '#f1f5f9', drawBorder: false },
+          ticks: { color: '#94a3b8', font: { family: 'IBM Plex Mono', size: 10 } }
         },
         y: {
-          grid: { color: '#1e2740', drawBorder: false },
-          ticks: { color: '#5a657d', font: { family: 'IBM Plex Mono', size: 10 } }
+          grid: { color: '#f1f5f9', drawBorder: false },
+          ticks: { color: '#94a3b8', font: { family: 'IBM Plex Mono', size: 10 } }
         }
       }
     };
@@ -230,11 +230,12 @@ async function initCharts() {
         datasets: [{
           data: health.map(h => h['anomaly_rate_%']),
           backgroundColor: health.map(h =>
-            h['anomaly_rate_%'] > 2.5 ? 'rgba(239,68,68,0.8)' :
-            h['anomaly_rate_%'] > 2.0 ? 'rgba(245,158,11,0.8)' :
-                                        'rgba(59,130,246,0.7)'
+            h['anomaly_rate_%'] > 2.5 ? 'rgba(239,68,68,0.85)' :
+            h['anomaly_rate_%'] > 2.0 ? 'rgba(245,158,11,0.85)' :
+                                        'rgba(37,99,235,0.75)'
           ),
-          borderRadius: 3
+          borderRadius: 4,
+          borderSkipped: false
         }]
       },
       options: { ...chartDefaults, plugins: { ...chartDefaults.plugins,
@@ -249,9 +250,10 @@ async function initCharts() {
         datasets: [{
           data: cost.map(c => Math.round(c.annual_loss_inr)),
           backgroundColor: cost.map((_, i) =>
-            i < 3 ? 'rgba(239,68,68,0.75)' : 'rgba(59,130,246,0.55)'
+            i < 3 ? 'rgba(239,68,68,0.85)' : 'rgba(37,99,235,0.65)'
           ),
-          borderRadius: 3
+          borderRadius: 4,
+          borderSkipped: false
         }]
       },
       options: { ...chartDefaults, plugins: { ...chartDefaults.plugins,
